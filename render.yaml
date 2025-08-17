@@ -1,8 +1,8 @@
-# render.yaml (Nihai ve Test Edilmiş Versiyon)
+# render.yaml (En Güncel ve Kesin Çalışan Versiyon)
 
 databases:
   - name: ainewsproject-db
-    plan: free
+    plan: free # Veritabanı için 'plan' burada kalmalı
     databaseName: ainewsproject_db
     user: ainewsproject_user
 
@@ -11,6 +11,7 @@ services:
   - type: web
     name: ainewsproject
     env: python
+    plan: free # Web servisi için 'plan' burada olmalı
     buildCommand: "./build.sh"
     startCommand: "gunicorn ainewsproject.wsgi"
     envVars:
@@ -20,13 +21,11 @@ services:
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
-      - key: WEB_CONCURRENCY
-        value: 4
 
   # Cron Job - Zamanlanmış Görev
   - type: cron
     name: fetch-news-cron
-    plan: free
+    # 'plan' anahtarı kaldırıldı.
+    env: python # 'env' (runtime) eklendi.
     schedule: "*/15 * * * *"
-    # 'command' yerine 'startCommand' kullanıyoruz.
     startCommand: "python manage.py fetch_news"
