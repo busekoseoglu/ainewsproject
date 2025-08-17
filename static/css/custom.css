@@ -1,0 +1,191 @@
+/* static/css/custom.css (NİHAİ VE TAM VERSİYON) */
+
+body {
+    background-color: #0E1117;
+    color: #FAFAFA;
+}
+
+/* --- KENAR ÇUBUĞU ve OFFCANVAS --- */
+.sidebar {
+    background-color: #262730;
+    border-right: 1px solid #444;
+    padding: 0;
+}
+
+/* 
+   .offcanvas-body: Hem mobilde açılan menünün hem de masaüstü sidebar'ının
+   içeriğini stilize eden ana kural. Bu, iki görünümün de aynı olmasını sağlar.
+*/
+.sidebar .offcanvas-body {
+    padding: 2.5rem;/* Kenarlardan boşluk */
+    display: flex;
+    flex-direction: column; /* İçeriği dikey sırala */
+}
+
+/* Sadece BÜYÜK EKRANLARDA (992px+) yapışkan özelliği uygula */
+@media (min-width: 992px) {
+    .sidebar.offcanvas-lg {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+}
+
+/* 
+   Başlıkların altındaki boşluğu ve stilini ayarla.
+   Bu kural hem masaüstü başlığını (h3) hem de mobil başlığını (.offcanvas-title) hedefler.
+*/
+.sidebar h3,
+.sidebar .offcanvas-title {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+/* Her bir filtre grubu arasındaki boşluğu ayarla */
+.sidebar .form-group {
+    margin-bottom: 1.25rem;
+}
+
+/* Etiketlerin (label) stilini ayarla */
+.sidebar .form-label {
+    color: #A0A4B8;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+/* Form kutularının stilini ayarla */
+.sidebar .form-control,
+.sidebar .form-select {
+    background-color: #262730;
+    color: #FAFAFA;
+    border: 1px solid #4A4A52;
+    cursor: pointer;
+}
+
+/* Dropdown okunu beyaz yap */
+.sidebar .form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Tıklama (focus) efektini sadeleştir */
+.sidebar .form-control:focus,
+.sidebar .form-select:focus {
+    background-color: #262730;
+    border-color: #A0A4B8;
+    color: #FAFAFA;
+    box-shadow: none;
+}
+
+/* Mobil offcanvas kapatma butonu */
+.offcanvas .btn-close {
+    filter: invert(1) grayscale(100) brightness(200%);
+}
+
+
+/* --- ANA İÇERİK --- */
+.main-content {
+    padding: 2.5rem 4vw;
+}
+
+.main-content h1 {
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+
+/* --- MOBİL FİLTRE TETİKLEYİCİSİ --- */
+.filter-trigger-mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #262730;
+    border: 1px solid #4A4A52;
+    border-radius: 0.375rem;
+    color: #A0A4B8;
+    text-decoration: none;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.filter-trigger-mobile:hover {
+    background-color: #31333f;
+    border-color: #A0A4B8;
+    color: #FAFAFA;
+}
+
+.filter-trigger-mobile .filter-text {
+    font-weight: 600;
+}
+
+
+/* --- HABER KARTI --- */
+.news-card {
+    background-color: #FFFFFF;
+    color: #000000;
+    border-radius: 1.25rem;
+    margin-bottom: 1.25rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    border: 1px solid #444;
+    transition: transform 0.2s;
+}
+
+.news-card:hover {
+    transform: scale(1.03);
+}
+
+.news-card-img {
+    width: 100%;
+    height: 220px; 
+    object-fit: cover;
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
+}
+
+.news-card-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.news-card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.625rem;
+}
+
+.news-card-description {
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.news-card-meta {
+    font-size: 0.8rem;
+    color: #555;
+    border-top: 1px solid #ddd;
+    padding-top: 0.5rem;
+    margin-top: auto;
+}
+
+/* --- YENİ ÖZEL KAPATMA BUTONU STİLİ --- */
+.btn-close-custom {
+    background: transparent;
+    border: 0;
+    color: #FAFAFA;
+    font-size: 2rem; /* Daha büyük ve belirgin bir X */
+    line-height: 1;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.btn-close-custom:hover {
+    opacity: 1;
+}

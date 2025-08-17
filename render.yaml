@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: ainewsproject
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn ainewsproject.wsgi"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ainewsproject-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+
+  - type: pserv
+    name: ainewsproject-db
+    plan: free
+    databaseName: ainewsproject_db
+    user: ainewsproject_user
+
+  - type: cron
+    name: fetch-news-cron
+    plan: free
+    schedule: "*/15 * * * *"
+    command: "python manage.py fetch_news"

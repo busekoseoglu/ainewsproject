@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest AI News</title>
+    
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"/>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Kenar Çubuğu (Nihai ve Düzeltilmiş Versiyon) -->
+            <div class="sidebar col-md-2 offcanvas-lg offcanvas-start" tabindex="-1" id="filterSidebar">
+                
+                <!-- Sadece mobil için başlık ve kapatma butonu -->
+                <div class="offcanvas-header d-lg-none">
+                    <h5 class="offcanvas-title">Filter Options</h5>
+                    <!-- ESKİ BUTON SİLİNDİ, YERİNE BU GELDİ -->
+                    <button type-="button" class="btn-close-custom" id="closeOffcanvasBtn">&times;</button>
+                </div>
+
+                <!-- Offcanvas içeriği -->
+                <div class="offcanvas-body">
+                    <h3 class="d-none d-lg-block">Filter Options</h3>
+    
+                    <form method="GET" action="">
+                        <div class="form-group">
+                            <label for="dateRangePicker" class="form-label">Choose dates</label>
+                            <input type="text" class="form-control" id="dateRangePicker" readonly>
+                            <input type="hidden" name="start_date" id="startDateHidden" value="{{ start_date|default:'' }}">
+                            <input type="hidden" name="end_date" id="endDateHidden" value="{{ end_date|default:'' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sourceSelect" class="form-label">Choose sources</label>
+                            <select class="form-select" name="source" id="sourceSelect">
+                                <option value="" {% if not selected_sources.0 %}selected{% endif %}>All Sources</option>
+                                {% for source in all_sources %}
+                                    <option value="{{ source }}" {% if source == selected_sources.0 %}selected{% endif %}>
+                                        {{ source }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary d-none">Apply</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Ana İçerik -->
+            <div class="col-12 col-md-10 main-content">
+
+                <h1>Latest AI News</h1>
+
+                <a class="d-lg-none mb-4 filter-trigger-mobile" data-bs-toggle="offcanvas" href="#filterSidebar" role="button">
+                    <span class="filter-text">Filter Options</span>
+                    <!-- Bu SVG, basit bir ayarlar (slider) ikonudur -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1z"/>
+                    </svg>
+                </a>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+                    {% for news in news_list %}
+                    <div class="col">
+                        <a href="{{ news.link }}" target="_blank" class="news-card">
+                            <img src="{{ news.image_url|default_if_none:'' }}" class="news-card-img" alt="{{ news.title }}"
+                                 onerror="this.onerror=null;this.src='{% static 'images/placeholder.jpeg' %}';">
+                            <div class="news-card-body">
+                                <h5 class="news-card-title">{{ news.title }}</h5>
+                                <p class="news-card-description">{{ news.description|truncatechars:150 }}</p>
+                                <div class="news-card-meta">
+                                    <span>{{ news.source }}</span>
+                                    <span class="float-end">{{ news.published|date:"d M Y" }}</span>
+                                 </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const offcanvasElement = document.getElementById('filterSidebar');
+            const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+            
+            document.getElementById('closeOffcanvasBtn').addEventListener('click', function() {
+                offcanvas.hide();
+            });
+            
+            const picker = new Litepicker({
+                element: document.getElementById('dateRangePicker'),
+                singleMode: false,
+                format: 'YYYY/MM/DD',
+                setup: (picker) => {
+                    picker.on('selected', (date1, date2) => {
+                        document.getElementById('startDateHidden').value = date1.format('YYYY-MM-DD');
+                        document.getElementById('endDateHidden').value = date2.format('YYYY-MM-DD');
+                        document.querySelector('form').submit();
+                    });
+                }
+            });
+
+            const startDateValue = document.getElementById('startDateHidden').value;
+            const endDateValue = document.getElementById('endDateHidden').value;
+            if (startDateValue && endDateValue) {
+                const formattedStartDate = startDateValue.replace(/-/g, '/');
+                const formattedEndDate = endDateValue.replace(/-/g, '/');
+                document.getElementById('dateRangePicker').value = `${formattedStartDate} - ${formattedEndDate}`;
+            }
+
+            document.getElementById('sourceSelect').addEventListener('change', function() {
+                this.form.submit();
+            });
+        });
+    </script>
+
+</body>
+</html>

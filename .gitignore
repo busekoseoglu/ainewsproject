@@ -1,0 +1,34 @@
+# Python cache dosyaları
+__pycache__/
+*.pyc
+
+# Django'nun SQLite veritabanı (canlıda kullanmayacağız)
+*.sqlite3
+db.sqlite3
+
+# Hassas bilgileri içeren ortam değişkeni dosyası
+.env
+
+# Sanal ortam klasörü (bu çok önemli!)
+venv/
+.venv/
+
+# Statik dosyaların toplandığı klasör (Render bunu kendi oluşturacak)
+staticfiles/
+
+# IDE ve işletim sistemi özel dosyaları
+.idea/
+.vscode/
+*.DS_Store
+*.suo
+*.user
+
+# Django log dosyaları
+*.log
+
+# Medya dosyaları (kullanıcıların yüklediği resimler vb. - projenizde varsa)
+media/
+
+# Test raporları ve kapsam dosyaları
+.coverage
+htmlcov/
